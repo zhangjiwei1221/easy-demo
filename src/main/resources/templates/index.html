@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件下载测试</title>
+    <script src="https://cdn.staticfile.org/axios/0.21.2/axios.min.js"></script>
+</head>
+<body>
+    <button onclick="col()">添加序号列测试</button>
+    <script>
+        function col() {
+            download('http://localhost:8080/col', 'col.xlsx')
+        }
+
+        function download(url, name) {
+            axios({
+                url: url,
+                responseType: 'blob'
+            }).then((response) => {
+                const URL = window.URL.createObjectURL(response.data)
+                const tempLink = document.createElement('a')
+                tempLink.style.display = 'none'
+                tempLink.href = URL
+                tempLink.setAttribute('download', name)
+                if (typeof tempLink.download === 'undefined') {
+                    tempLink.setAttribute('target', '_blank')
+                }
+                document.body.appendChild(tempLink)
+                tempLink.click()
+                document.body.removeChild(tempLink)
+                window.URL.revokeObjectURL(URL)
+            })
+        }
+    </script>
+</body>
+</html>
