@@ -6,7 +6,6 @@ import cn.butterfly.easydemo.handler.AddNoHandler;
 import com.alibaba.excel.EasyExcel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
@@ -20,9 +19,6 @@ import java.util.List;
 @RestController
 public class ExcelController {
 
-    @Resource
-    private AddNoHandler addNoHandler;
-
     /**
      * 添加序号列测试
      *
@@ -33,7 +29,7 @@ public class ExcelController {
         try {
             List<Student> students = getStudentList();
             EasyExcel.write(response.getOutputStream(), Student.class)
-                    .registerWriteHandler(addNoHandler)
+                    .registerWriteHandler(new AddNoHandler())
                     .sheet()
                     .doWrite(students);
         } catch (Exception e) {
